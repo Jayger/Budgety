@@ -68,10 +68,23 @@ var budgetController = (function() {
             // calculate the budget: income - expenses
             data.budget = data.totals.inc - data.totals.exp;
 
-            // calculate the percentage of income that we spend
-            data.percentage = Math.round((data.totals.exp / data.totals.income) * 100);
+            if(data.totals.inc > 0) {
+                // calculate the percentage of income that we spend
+                data.percentage = Math.round((data.totals.exp / data.totals.income) * 100);
+            } else {
+                data.percentage = -1;
+            };
 
             // Expense = 100 and income 200, spent 50% = 100/200 = 0.5 * 100
+        },
+
+        getBudget: function() {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            }
         },
 
         testing: function() {
@@ -174,11 +187,15 @@ var controller = (function(budgetCtrl, UICtrl) {
     };
 
     var updateBudget = function () {
+        var budget;
         // 1. Calculate the budget
+        budgetCtrl.calculateBudget();
 
         // 2. return the budget
+        budget = budgetCtrl.getBudget();
 
         // 3. Display the budget on the UI
+        
     };
     
     var ctrlAddItem = function () { 
